@@ -55,7 +55,6 @@ fn main() {
 }
 
 fn recolor(mut source_image: DynamicImage) {
-    // Placeholder for recolor logic
     println!("Recolor function called.");
     match source_image.color() {
         ColorType::L8 => println!("Image is encoded as: L8"),
@@ -125,7 +124,14 @@ fn recolor_rgba8(source_image: &mut RgbaImage) {
         }
         input.clear();
     }
+    println!("Enter a filename for the recolored image: (default: recolor_output.png)");
+    io::stdin()
+        .read_line(&mut input)
+        .expect("Failed to read line");
+    if input.len() == 0 {
+        input = "recolor_output.png".into();
+    }
     source_image
-        .save("recolor_output.png")
+        .save(input.trim())
         .expect("Failed to save recolored image");
 }
