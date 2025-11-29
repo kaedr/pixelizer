@@ -1,5 +1,5 @@
 use core::panic;
-use std::{cell::LazyCell, collections::HashMap, io};
+use std::{cell::LazyCell, cmp, collections::HashMap, io};
 
 use clap::{Parser, Subcommand};
 use image::{ColorType, DynamicImage, ImageReader, Pixel, RgbaImage};
@@ -99,9 +99,14 @@ fn recolor_rgba8(source_image: &mut RgbaImage) {
     let mut input = String::new();
     for (color, locations) in pixel_map {
         let color_swatch = "    ".on_truecolor(color[0], color[1], color[2]);
+        let cutoff = cmp::min(10, locations.len());
         println!(
-            "Color: #{:02x}{:02x}{:02x} {} at locations: {:?}",
-            color[0], color[1], color[2], color_swatch, locations
+            "Color: #{:02x}{:02x}{:02x} {} at locations: {:?}...",
+            color[0],
+            color[1],
+            color[2],
+            color_swatch,
+            &locations[..cutoff]
         );
         println!(
             "Enter new color for this color (in hex format, e.g. #ff00ff), or press Enter to keep the same color:"
